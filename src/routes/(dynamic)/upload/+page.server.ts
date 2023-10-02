@@ -21,7 +21,6 @@ export const actions = {
 				accept: '*/*'
 			},
 			method: 'PUT',
-			mode: 'cors',
 			body: fileToUpload
 		});
 		const link = await upload.text();
