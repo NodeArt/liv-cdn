@@ -1,6 +1,6 @@
 <script>
 	import { onMount, createEventDispatcher } from 'svelte';
-	import WebViewer from '@pdftron/pdfjs-express';
+	import WebViewer from '@pdftron/pdfjs-express-viewer';
 
 	let viewer;
 	let searchText;
@@ -10,7 +10,8 @@
 	onMount(async () => {
 		WebViewer(
 			{
-				path: '/pdfjsexpress'
+				path: '/pdfjsexpress',
+				licenseKey: '1njek4XpdR0uCYr21RyY',
 			},
 			viewer
 		).then((inst) => {

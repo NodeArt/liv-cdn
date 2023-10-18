@@ -10,7 +10,7 @@
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
 		"lint": "prettier --plugin-search-dir . --check . && eslint .",
 		"format": "prettier --plugin-search-dir . --write .",
-		"move-static": "cp -a ./node_modules/@pdftron/pdfjs-express/public/. ./static/pdfjsexpress"
+		"move-static": "cp -a ./node_modules/@pdftron/pdfjs-express-viewer/public/. ./static/pdfjsexpress"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-cloudflare": "^2.3.2",
@@ -30,6 +30,6 @@
 	},
 	"type": "module",
 	"dependencies": {
-		"@pdftron/pdfjs-express": "^8.7.4"
+		"@pdftron/pdfjs-express-viewer": "^8.7.4"
 	}
 }
