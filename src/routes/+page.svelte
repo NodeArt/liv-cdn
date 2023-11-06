@@ -4,3 +4,4 @@
 <a href="/camera" role="button">Camera test page</a>
 <a href="/pdf" role="button">Pdf test page</a>
 <a href="/power-bi" role="button">PowerBI test page</a>
+<a href="/links" role="button">onelinks test page</a>
