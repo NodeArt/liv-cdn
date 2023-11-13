@@ -11,7 +11,7 @@
 		WebViewer(
 			{
 				path: '/pdfjsexpress',
-				licenseKey: '1njek4XpdR0uCYr21RyY',
+				licenseKey: '1njek4XpdR0uCYr21RyY'
 			},
 			viewer
 		).then((inst) => {
@@ -21,7 +21,7 @@
 	});
 
 	function onSearch() {
-		console.log("search", searchText)
+		console.log('search', searchText);
 		instance?.UI?.searchText(searchText, {
 			//...options // see the API reference for options
 		});
@@ -38,7 +38,7 @@
 
 <style>
 	div {
-    	margin:0 auto;
+		margin: 0 auto;
 		width: 100%;
 		height: 100%;
 		min-height: 1000px;
