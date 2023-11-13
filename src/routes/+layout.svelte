@@ -1,5 +1,6 @@
-
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
 <main>
-    <slot></slot>
+    <article>
+        <slot></slot>
+    </article>
 </main>
