@@ -6,7 +6,7 @@
 	};
 </script>
 
-<h1>Users in MGA table</h1>
+<h1>CC to clarify</h1>
 
 <!--{JSON.stringify(data)}-->
 
