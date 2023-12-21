@@ -1,5 +1,5 @@
 import { error, fail } from '@sveltejs/kit';
-import { insertIntoBigquery, listTableDataBigquery } from '$lib/utils/bigquery';
+import { insertIntoBigquery, listTableDataBigquery, runJob } from '$lib/utils/bigquery';
 export async function load() {
 	let data;
 	try {
@@ -36,5 +36,14 @@ export const actions = {
 			return fail(500, { error: 'bq', message });
 		}
 		return { success: true, uid };
+	},
+	update: async ({ request }) => {
+		try {
+			await runJob({ dataset: 'ccapp', table: 'processingQueryMaterailized' });
+		} catch (e) {
+			const message = e instanceof Error ? e.message : 'unknown BQ error';
+			return fail(500, { error: 'bq', message });
+		}
+		return { success: true };
 	}
 };

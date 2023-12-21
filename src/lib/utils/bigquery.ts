@@ -81,7 +81,6 @@ export async function listTableDataBigquery(
 	};
 
 	let apiUrl = new URL(url);
-	console.log(apiUrl);
 	if (maxResults) apiUrl.searchParams.append('maxResults', maxResults.toString());
 	if (formatOptions) apiUrl.searchParams.append('pageToken', formatOptions);
 	if (selectedFields) apiUrl.searchParams.append('selectedFields', selectedFields);
@@ -102,5 +101,56 @@ export async function listTableDataBigquery(
 		const message = e instanceof Error ? e.message : 'unknown BQ error';
 		console.error(`Error reading rows from BigQuery table: ${message}, ${JSON.stringify(e)}`);
 		throw Error(`Error reading rows from BigQuery table: ${message}`);
+	}
+}
+
+export async function runJob({ dataset, table }): Promise<void> {
+	const url = `https://www.googleapis.com/bigquery/v2/projects/${PROJECT_ID}/jobs`;
+
+	const scopes = ['https://www.googleapis.com/auth/bigquery'];
+
+	const ACCESS_TOKEN = await getAuthToken(scopes);
+
+	const requestBody = {
+		configuration: {
+			query: {
+				useLegacySql: false,
+				query: `SELECT * FROM ${dataset}.processingQuery`,
+				destinationTable: {
+					datasetId: dataset,
+					projectId: PROJECT_ID,
+					tableId: table
+				},
+				createDisposition: 'CREATE_IF_NEEDED',
+				writeDisposition: 'WRITE_TRUNCATE'
+			}
+		}
+	};
+	const requestHeaders = {
+		Authorization: `Bearer ${ACCESS_TOKEN.accessToken}`,
+		'Content-Type': 'application/json'
+	};
+	const requestOptions = {
+		method: 'POST',
+		headers: requestHeaders,
+		body: JSON.stringify(requestBody)
+	};
+
+	try {
+		const response = await fetch(url, requestOptions);
+		const responseText = await response.text();
+
+		if (!response.ok) {
+			throw Error(
+				`Error inserting row into BigQuery table: ${response.status} ${response.statusText} ${responseText}`
+			);
+		}
+		console.log('job:', responseText);
+
+		console.log(`Inserted row(s) into BigQuery table ${dataset}.${table}`, responseText);
+	} catch (e) {
+		const message = e instanceof Error ? e.message : 'unknown BQ error';
+		console.error(`Error inserting row into BigQuery table: ${message}, ${JSON.stringify(e)}`);
+		throw Error(`Error inserting row into BigQuery table: ${message}`);
 	}
 }

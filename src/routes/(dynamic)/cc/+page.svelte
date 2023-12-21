@@ -1,6 +1,7 @@
 <script lang="ts">
 	export let data;
 	import { enhance } from '$app/forms';
+
 	const send = async function (event) {
 		console.log(event.target);
 	};
@@ -9,9 +10,12 @@
 <h1>CC to clarify</h1>
 
 <!--{JSON.stringify(data)}-->
+<form on:submit={send} use:enhance method="post" action="?/update">
+	<input type="submit" value="Ok" />
+</form>
 
 <table>
-	<caption> CC </caption>
+	<caption> CC</caption>
 	<thead>
 		<tr>
 			<th scope="col">no</th>
