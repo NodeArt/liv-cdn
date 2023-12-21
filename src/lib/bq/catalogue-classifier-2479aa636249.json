@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "catalogue-classifier",
+  "private_key_id": "2479aa63624904773928d580b40446531864989c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCmmYR5v6i2z2Gv\nZrcijPwC4G5KpJH3sJm1bkLkJ9B6V1zg41npOSoo2Kq+13YAVZyMrW6bx6sWTQ/S\n+zHOhweBUOVDq+yirMdc4B2xXDLCpFakEOiAoaZskULiZ9raVUc03NtW9BHXtxCi\nkJjvn2EnLkQMY0VRT1C0pKdIz5ITuUDguEancFTPMz08c/hY5VtJBOZNEju4FeMc\nwmBgSRjtHlL28fzbOmypq/qNWxgXZ3AgtZYZuxB6Mrg0YglVN0D5SYU7Kq58U+au\nYgcmS8kz1qzs984k2o6KRcwVcxmoS3dGOJLQs4LsRmcq1kMR5opo8EkBWK1WYv15\nuH96x6HLAgMBAAECggEAR1Y8Hh/d3+2cEA3FBFPnQ1oTj/25DRz/LGua0/Ridkh7\nWkavxMh4D4Z7Un2TJyCBiNFop+bPER0NVhO+p4c1RP+9NAVlreCa+19yB3SJvcO9\n38HntNDDIQDwaV78HPpgI7ggabLYAwz94AZXnl+aK7tJYx6M23zBe6B3ixtqmuvK\nvIHNI+Fo9hMo51wnAQJpi46m11mJlBv2VUw1TFUlsqFNEV2RtIP+OwsUFMPVt4xH\npMEWEBJ75qdy91Ag7aDcvNQrYYYsmq/s8O3gnv3KX/KUeV4Y/kiITQvdAAFc2iOQ\ng2oGivTjneR/YTfb2jKFiLwwo2syIZhLf6svBiMuvQKBgQDa9WcaAHz32/HGbChs\nh2cI9m6aZqRNfbgDiYreajEcq+rngRuFuBGDCLi0OlU+sM4Sx0Y+63zXebGRIfSk\nwvn7VJWzsAZsiyJJJ0SEFcPhj3w72I6ptpXqskUwO4iQqolwjysZQ+GkP5hYESTO\nlQ3DXyFWjL/s1BdQa9F7pW29HwKBgQDCyJG0ooxveBGqwJzvCaSmNEfGidGnXiBi\nOZ2E4nsXhPCgq5hp3QPgqmAlXufZncDzMMmdJhLMwfwfbMjl/V8LdCvtjWh3HlKQ\nixJQS2YuIkfWTIEYPVbiXTLLt9l1iG8sogU2+7/9M0ytreUiIRkz97m+Nb6Exts8\nX6Nm35bZ1QKBgQCpJdMUHzRrNZo9Mui3jpJmNhmTZZ+fzXMOKH8C+v4drCG33eEp\nF91PYLlvYXDhESzhDNiTWtAClZw7BgQ8E/OR2PIc8erEh2dhI9imQTolUfcjNFRh\nfw+pUzZn4FXLjDLIpZEh33K8s/Q4dGX+wN71AtR6TBkoF2A7XE9kOZPg+QKBgErw\nW46Bk0I3kaR+ImKc9Sm0p4Cs+WpI/nCL9hxv/ieYT/Og0Sy5iYpgQklecBj7Zoap\n2IeLZGQ+pb95XPmPN4fylAv7AZwCoIVX3B3kRFWvfq/mEyy+PLUuYiKagyGC8jLb\nyuHSjZTerbuMUcGFtmqV/nI9vyTaVPKvYPBtSV5ZAoGAIZaMFSIodV53GR0pDhkd\noj+8U8IelB4GDvDsY1D2Ki1h3kIuqC7TdMqJJZBSXZ0wjI0FZnP5WiTItwKp/gpp\nkZOt2R68szBUs2HXWY0bbFKzpshqjSdnet9+BKX/jorrt2GRVE0puQoTQWyTxufU\ngFumDOOhrrfpE+nsWuL2puE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "ccapp-account@catalogue-classifier.iam.gserviceaccount.com",
+  "client_id": "111064935848647070662",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/ccapp-account%40catalogue-classifier.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

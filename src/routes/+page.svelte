@@ -8,6 +8,7 @@
 	<a href="/news" role="button">RSS parser html</a>
 	<a data-sveltekit-reload href="/api/news" role="button">RSS parser api</a>
 	<a href="/google-news" role="button">Google RSS</a>
+	<a data-sveltekit-preload-data="off" data-sveltekit-reload href="/cc" role="button">cc</a>
 	<a href="/links" role="button">onelinks test page</a>
 </main>
 
