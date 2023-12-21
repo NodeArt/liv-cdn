@@ -81,7 +81,7 @@ export async function listTableDataBigquery(
 	};
 
 	let apiUrl = new URL(url);
-	console.log(apiUrl)
+	console.log(apiUrl);
 	if (maxResults) apiUrl.searchParams.append('maxResults', maxResults.toString());
 	if (formatOptions) apiUrl.searchParams.append('pageToken', formatOptions);
 	if (selectedFields) apiUrl.searchParams.append('selectedFields', selectedFields);

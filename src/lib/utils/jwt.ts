@@ -18,6 +18,7 @@ function decodeCredentials(value: string): Credentials {
 			.replace('-----END PRIVATE KEY-----', '')
 			.replace(/\n/g, '');
 		credentials.private_key = base64.parse(keyBase64);
+		console.log(credentials, credentials.private_key);
 		cache.set(key, credentials);
 	}
 
@@ -114,12 +115,12 @@ async function getAuthToken<T extends AccessToken | IdToken = AccessToken>(
 					accessToken: data.access_token.replace(/\.+$/, ''),
 					type: data.token_type,
 					expires
-				} as T)
+			  } as T)
 			: ({
 					idToken: data.id_token.replace(/\.+$/, ''),
 					audience: scope,
 					expires
-				} as T);
+			  } as T);
 
 		cache.set(cacheKey, authToken);
 	}
