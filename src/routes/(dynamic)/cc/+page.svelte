@@ -11,7 +11,7 @@
 
 <!--{JSON.stringify(data)}-->
 <form on:submit={send} use:enhance method="post" action="?/update">
-	<input type="submit" value="Ok" />
+	<input type="submit" value="recreate processing query" />
 </form>
 
 <table>
