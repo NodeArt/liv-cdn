@@ -29,7 +29,11 @@ export const actions = {
 		const answer = data.get('answer')?.toString();
 		if (!answer) return fail(400, { error: 'answer', message: 'missing answer' });
 
-		const bqObject = { addingTime: Math.floor(Date.now() / 1000), uid, answer: answer ? 1 : 0 };
+		const bqObject = {
+			addingTime: Math.floor(Date.now() / 1000),
+			uid,
+			answer: answer === '1' ? 1 : 0
+		};
 
 		try {
 			await insertIntoBigquery({ row: bqObject, dataset: 'ccapp', table: 'answers' });
