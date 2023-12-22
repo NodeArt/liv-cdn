@@ -1,18 +1,11 @@
 <script lang="ts">
 	export let data;
 	import { enhance } from '$app/forms';
-
-	const send = async function (event) {
-		console.log(event.target);
-	};
 </script>
 
 <h1>CC to clarify</h1>
 
 <!--{JSON.stringify(data)}-->
-<form on:submit={send} use:enhance method="post" action="?/update">
-	<input type="submit" value="recreate processing query" />
-</form>
 
 <table role="grid">
 	<caption> CC</caption>
@@ -34,7 +27,6 @@
 					<th scope="row">{i + 1}</th>
 					<td>
 						<form
-							on:submit={send}
 							use:enhance={({ formElement, formData, action, cancel, submitter }) => {
 								return async ({ result, update }) => {
 									if (result?.data?.uid === data.records[i].uid) {
@@ -56,7 +48,6 @@
 					</td>
 					<td>
 						<form
-							on:submit={send}
 							use:enhance={({ formElement, formData, action, cancel, submitter }) => {
 								return async ({ result, update }) => {
 									if (result?.data?.uid === data.records[i].uid) {
@@ -89,17 +80,18 @@
 		{:else}
 			<tr>
 				<th scope="row">0</th>
-				<td>-</td>
-				<td>-</td>
-				<td>-</td>
-				<td>-</td>
+				<td colspan="5"
+					>-- no data from <a
+						href="https://console.cloud.google.com/bigquery?project=catalogue-classifier">BQ</a
+					> --</td
+				>
 			</tr>
 		{/if}
 	</tbody>
 	<tfoot>
 		<tr>
 			<th scope="row" colspan="2">Total:</th>
-			<td colspan="1"><b>{data?.records?.length}</b></td>
+			<td colspan="1"><b>{data?.records?.length ?? 0}</b></td>
 		</tr>
 	</tfoot>
 </table>

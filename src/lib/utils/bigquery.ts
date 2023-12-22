@@ -152,3 +152,48 @@ export async function runJob({ dataset, table }): Promise<void> {
 		throw Error(`Error inserting row into BigQuery table: ${message}`);
 	}
 }
+
+export async function runQuery(
+	{ dataset, table },
+	{ formatOptions, selectedFields, startIndex, maxResults, pageToken }: ListOptions = {}
+): Promise<void> {
+	const url = `https://www.googleapis.com/bigquery/v2/projects/${PROJECT_ID}/queries`;
+
+	const scopes = ['https://www.googleapis.com/auth/bigquery'];
+
+	const ACCESS_TOKEN = await getAuthToken(scopes);
+
+	const requestBody = {
+		useLegacySql: false,
+		query: `SELECT * FROM ${dataset}.processingQuery`,
+		maxResults: maxResults,
+		useLegacySql: false,
+		timeoutMs: 100000,
+		useQueryCache: true
+	};
+	const requestHeaders = {
+		Authorization: `Bearer ${ACCESS_TOKEN.accessToken}`,
+		'Content-Type': 'application/json'
+	};
+	const requestOptions = {
+		method: 'POST',
+		headers: requestHeaders,
+		body: JSON.stringify(requestBody)
+	};
+
+	try {
+		const response = await fetch(url, requestOptions);
+		const responseText = await response.text();
+
+		if (!response.ok) {
+			throw Error(
+				`Error inserting row into BigQuery table: ${response.status} ${response.statusText} ${responseText}`
+			);
+		}
+		return JSON.parse(responseText);
+	} catch (e) {
+		const message = e instanceof Error ? e.message : 'unknown BQ error';
+		console.error(`Error inserting row into BigQuery table: ${message}, ${JSON.stringify(e)}`);
+		throw Error(`Error inserting row into BigQuery table: ${message}`);
+	}
+}

@@ -1,24 +1,19 @@
 import { error, fail } from '@sveltejs/kit';
-import { insertIntoBigquery, listTableDataBigquery, runJob } from '$lib/utils/bigquery';
+import { insertIntoBigquery, runQuery } from '$lib/utils/bigquery';
 export async function load() {
 	let data;
 	try {
-		data = await listTableDataBigquery(
-			{ dataset: 'ccapp', table: 'processingQueryMaterailized' },
-			{ maxResults: 2500 }
-		);
+		data = await runQuery({ dataset: 'ccapp', table: 'processingQuery' }, { maxResults: 1000 });
 	} catch (e) {
 		const message = e instanceof Error ? e.message : 'unknown BQ error';
 		return error(500, message);
 	}
 	let totalRows = data.totalRows;
 	let pageToken = data.pageToken;
-	let records = data.rows
-		.map((row) => {
-			return { uid: row.f[0].v, code: row.f[2].v, name: row.f[1].v, match: row.f[3].v };
-		})
-		.sort((a, b) => a.code - b.code);
-	return { totalRows, records, data };
+	let records = data.rows.map((row) => {
+		return { uid: row.f[0].v, code: row.f[2].v, name: row.f[1].v, match: row.f[3].v };
+	});
+	return { records };
 }
 
 export const actions = {
@@ -42,14 +37,5 @@ export const actions = {
 			return fail(500, { error: 'bq', message });
 		}
 		return { success: true, uid };
-	},
-	update: async ({ request }) => {
-		try {
-			await runJob({ dataset: 'ccapp', table: 'processingQueryMaterailized' });
-		} catch (e) {
-			const message = e instanceof Error ? e.message : 'unknown BQ error';
-			return fail(500, { error: 'bq', message });
-		}
-		return { success: true };
 	}
 };
