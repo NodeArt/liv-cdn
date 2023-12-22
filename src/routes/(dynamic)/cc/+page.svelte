@@ -20,9 +20,9 @@
 		<tr>
 			<th scope="col">no</th>
 			<th scope="col" class="hidden">uid</th>
-			<th scope="col">code</th>
-			<th scope="col">name</th>
-			<th scope="col">match</th>
+			<th scope="col">рро</th>
+			<th scope="col">код</th>
+			<th scope="col">ерпн (match)</th>
 			<th scope="col">action</th>
 			<th scope="col">submit</th>
 		</tr>
@@ -33,8 +33,12 @@
 				<tr>
 					<th scope="row">{i + 1}</th>
 					<td class="truncate hidden">{rec.uid}</td>
-					<td>{rec.code}</td>
 					<td>{rec.name}</td>
+					<td
+						><a target="_blanc" href="https://qdpro.com.ua/uk/uktzed_search/{rec.code}"
+							>{rec.code}</a
+						></td
+					>
 					<td>{rec.match}</td>
 					<td><input type="checkbox" bind:checked={rec.answer} /></td>
 					<td>

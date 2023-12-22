@@ -5,7 +5,7 @@ export async function load() {
 	try {
 		data = await listTableDataBigquery(
 			{ dataset: 'ccapp', table: 'processingQueryMaterailized' },
-			{ maxResults: 1000 }
+			{ maxResults: 2500 }
 		);
 	} catch (e) {
 		const message = e instanceof Error ? e.message : 'unknown BQ error';
@@ -13,9 +13,11 @@ export async function load() {
 	}
 	let totalRows = data.totalRows;
 	let pageToken = data.pageToken;
-	let records = data.rows.map((row) => {
-		return { uid: row.f[0].v, code: row.f[2].v, name: row.f[1].v, match: row.f[3].v };
-	});
+	let records = data.rows
+		.map((row) => {
+			return { uid: row.f[0].v, code: row.f[2].v, name: row.f[1].v, match: row.f[3].v };
+		})
+		.sort((a, b) => a.code - b.code);
 	return { totalRows, records, data };
 }
 
