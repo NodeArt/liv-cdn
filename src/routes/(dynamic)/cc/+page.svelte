@@ -19,12 +19,12 @@
 	<thead>
 		<tr>
 			<th scope="col">no</th>
+			<th scope="col">good</th>
+			<th scope="col">bad</th>
 			<th scope="col" class="hidden">uid</th>
 			<th scope="col">рро</th>
 			<th scope="col">код</th>
 			<th scope="col">ерпн (match)</th>
-			<th scope="col">action</th>
-			<th scope="col">submit</th>
 		</tr>
 	</thead>
 	<tbody>
