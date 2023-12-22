@@ -146,8 +146,6 @@ export async function runJob({ dataset, table }): Promise<void> {
 			);
 		}
 		console.log('job:', responseText);
-
-		console.log(`Inserted row(s) into BigQuery table ${dataset}.${table}`, responseText);
 	} catch (e) {
 		const message = e instanceof Error ? e.message : 'unknown BQ error';
 		console.error(`Error inserting row into BigQuery table: ${message}, ${JSON.stringify(e)}`);

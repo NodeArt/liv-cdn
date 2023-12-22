@@ -18,7 +18,6 @@ function decodeCredentials(value: string): Credentials {
 			.replace('-----END PRIVATE KEY-----', '')
 			.replace(/\n/g, '');
 		credentials.private_key = base64.parse(keyBase64);
-		console.log(credentials, credentials.private_key);
 		cache.set(key, credentials);
 	}
 
