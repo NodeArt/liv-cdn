@@ -23,8 +23,8 @@
 			<th scope="col">bad</th>
 			<th scope="col" class="hidden">uid</th>
 			<th scope="col">рро</th>
-			<th scope="col">код</th>
 			<th scope="col">ерпн (match)</th>
+			<th scope="col">код</th>
 		</tr>
 	</thead>
 	<tbody>
@@ -78,12 +78,12 @@
 					</td>
 					<td class="truncate hidden">{rec.uid}</td>
 					<td>{rec.name}</td>
+					<td>{rec.match}</td>
 					<td
 						><a target="_blanc" href="https://qdpro.com.ua/uk/uktzed_search/{rec.code}"
 							>{rec.code}</a
 						></td
 					>
-					<td>{rec.match}</td>
 				</tr>
 			{/each}
 		{:else}
@@ -128,18 +128,23 @@
 	thead th:nth-child(3) {
 		width: 15%;
 	}
+
 	thead th:nth-child(4) {
 		width: 13%;
 	}
+
 	thead th:nth-child(5) {
 		width: 25%;
 	}
+
 	thead th:nth-child(6) {
 		width: 30%;
 	}
+
 	thead th:nth-child(7) {
 		width: 30%;
 	}
+
 	.truncate {
 		width: 250px;
 		white-space: nowrap;
