@@ -122,7 +122,7 @@
 	}
 
 	thead th:nth-child(2) {
-		width: 7%;
+		width: 15%;
 	}
 
 	thead th:nth-child(3) {
