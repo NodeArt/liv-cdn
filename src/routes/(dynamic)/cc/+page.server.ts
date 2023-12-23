@@ -27,7 +27,7 @@ export const actions = {
 		const bqObject = {
 			addingTime: Math.floor(Date.now() / 1000),
 			uid,
-			answer: answer === '1' ? 1 : 0
+			answer: Number(answer) || -1
 		};
 
 		try {
