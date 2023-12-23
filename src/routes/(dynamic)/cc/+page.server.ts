@@ -3,7 +3,7 @@ import { insertIntoBigquery, runQuery } from '$lib/utils/bigquery';
 export async function load() {
 	let data;
 	try {
-		data = await runQuery({ dataset: 'ccapp', table: 'processingQuery' }, { maxResults: 1000 });
+		data = await runQuery({ dataset: 'ccapp', table: 'processingQuery' }, { maxResults: 100 });
 	} catch (e) {
 		const message = e instanceof Error ? e.message : 'unknown BQ error';
 		return error(500, message);
