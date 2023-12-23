@@ -27,7 +27,7 @@
 	<tbody>
 		{#if data?.records}
 			{#each data?.records as rec, i (rec.uid)}
-				<tr>
+				<tr class:divider={data.records[i].code !== data.records[i + 1]?.code}>
 					<th scope="row">{i + 1}</th>
 					<td>
 						<form
@@ -132,6 +132,11 @@
 
 	tr {
 		border: 1px solid;
+	}
+
+	.divider {
+		border-bottom-color: red;
+		border-bottom-style: double;
 	}
 
 	thead th:nth-child(1) {
