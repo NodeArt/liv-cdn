@@ -8,7 +8,14 @@ export const GET = (async ({ fetch }) => {
 		'https://rss.app/feeds/_70ZjRg3vZPhJKVIY.xml',
 		fetch
 	);
-	const result = feed.items.map((item) => {
+	feed.items=feed?.items.slice(0,5)
+
+	const api = feed?.items.map(item=>{
+		return  fetch(`https://api.worldnewsapi.com/extract-news?url=${item.link}&analyze=true&api-key=b3d4fe7ba6e14c6c8c7b29bf52b87605`).then(data=>data.json());
+	})
+	const xdata= await Promise.all(api);
+	console.log(xdata);
+	const result = feed.items.map((item, index) => {
 		return {
 			id: item.id,
 			title: html2Markdown(item.title),
@@ -18,7 +25,7 @@ export const GET = (async ({ fetch }) => {
 			published: item.published,
 			created: item.created,
 			category: item.category,
-			content: html2Markdown(item.content ?? item.fullText, {})
+			content: html2Markdown(xdata[index].text , {})
 			// content_encoded: html2Markdown(item.content_encoded)
 		};
 	});
