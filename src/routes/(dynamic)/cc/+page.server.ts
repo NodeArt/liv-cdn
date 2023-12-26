@@ -1,19 +1,22 @@
 import { error, fail } from '@sveltejs/kit';
 import { insertIntoBigquery, runQuery } from '$lib/utils/bigquery';
 export async function load() {
-	let data;
+	let dataQuery;
+	let countQuery;
 	try {
-		data = await runQuery({ dataset: 'ccapp', table: 'processingQuery' }, { maxResults: 100 });
+		dataQuery = await runQuery(`SELECT * FROM ccapp.processingQuery`, { maxResults: 100 });
+		countQuery = await runQuery(`SELECT count(*) FROM ccapp.processingQuery`, { maxResults: 1 });
 	} catch (e) {
 		const message = e instanceof Error ? e.message : 'unknown BQ error';
 		return error(500, message);
 	}
-	let totalRows = data.totalRows;
-	let pageToken = data.pageToken;
-	let records = data.rows.map((row) => {
+	const processingQuerySize = countQuery?.rows[0]?.f[0]?.v ?? 0;
+	// let totalRows = data.totalRows;
+	// let pageToken = data.pageToken;
+	const records = dataQuery.rows.map((row) => {
 		return { uid: row.f[0].v, code: row.f[2].v, name: row.f[1].v, match: row.f[3].v };
 	});
-	return { records };
+	return { records, processingQuerySize };
 }
 
 export const actions = {

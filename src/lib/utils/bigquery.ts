@@ -154,7 +154,7 @@ export async function runJob({ dataset, table }): Promise<void> {
 }
 
 export async function runQuery(
-	{ dataset, table },
+	query: string,
 	{ formatOptions, selectedFields, startIndex, maxResults, pageToken }: ListOptions = {}
 ): Promise<void> {
 	const url = `https://www.googleapis.com/bigquery/v2/projects/${PROJECT_ID}/queries`;
@@ -165,9 +165,8 @@ export async function runQuery(
 
 	const requestBody = {
 		useLegacySql: false,
-		query: `SELECT * FROM ${dataset}.processingQuery`,
+		query,
 		maxResults: maxResults,
-		useLegacySql: false,
 		timeoutMs: 100000,
 		useQueryCache: true
 	};

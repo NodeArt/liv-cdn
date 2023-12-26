@@ -4,6 +4,7 @@
 	export let data;
 	import { enhance } from '$app/forms';
 	let loading = 0;
+	let totals = data.processingQuerySize - data?.records?.length;
 </script>
 
 <h1>CC to clarify</h1>
@@ -116,7 +117,7 @@
 	<tfoot>
 		<tr>
 			<th scope="row" colspan="2">Total:</th>
-			<td colspan="1"><b>{data?.records?.length ?? 0}</b></td>
+			<td colspan="1"><b>{data?.records?.length ?? 0} / {totals + data?.records?.length}</b></td>
 		</tr>
 	</tfoot>
 </table>
