@@ -11,6 +11,7 @@
 	<a href="/rss-app" role="button">RSS app</a>
 	<a data-sveltekit-preload-data="off" data-sveltekit-reload href="/cc" role="button">cc</a>
 	<a href="/links" role="button">onelinks test page</a>
+	<a href="/json" role="button">json test page</a>
 </main>
 
 <style>
