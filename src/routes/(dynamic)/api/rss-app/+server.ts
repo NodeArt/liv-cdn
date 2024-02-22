@@ -4,16 +4,15 @@ import { parseRSS } from './parser';
 import { html2Markdown } from '@inkdropapp/html2markdown';
 
 export const GET = (async ({ fetch }) => {
-	const feed = await parseRSS(
-		'https://rss.app/feeds/_70ZjRg3vZPhJKVIY.xml',
-		fetch
-	);
-	feed.items=feed?.items.slice(0,5)
+	const feed = await parseRSS('https://rss.app/feeds/_70ZjRg3vZPhJKVIY.xml', fetch);
+	feed.items = feed?.items.slice(0, 5);
 
-	const api = feed?.items.map(item=>{
-		return  fetch(`https://api.worldnewsapi.com/extract-news?url=${item.link}&analyze=true&api-key=b3d4fe7ba6e14c6c8c7b29bf52b87605`).then(data=>data.json());
-	})
-	const xdata= await Promise.all(api);
+	const api = feed?.items.map((item) => {
+		return fetch(
+			`https://api.worldnewsapi.com/extract-news?url=${item.link}&analyze=true&api-key=b3d4fe7ba6e14c6c8c7b29bf52b87605`
+		).then((data) => data.json());
+	});
+	const xdata = await Promise.all(api);
 	console.log(xdata);
 	const result = feed.items.map((item, index) => {
 		return {
@@ -25,7 +24,7 @@ export const GET = (async ({ fetch }) => {
 			published: item.published,
 			created: item.created,
 			category: item.category,
-			content: html2Markdown(xdata[index].text , {})
+			content: html2Markdown(xdata[index].text, {})
 			// content_encoded: html2Markdown(item.content_encoded)
 		};
 	});
