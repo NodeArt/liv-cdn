@@ -23,17 +23,11 @@
         primary-color="#553adf"
         text-color="#4d4d4d"
         regular-font="'Arial', sans-serif"
+        style="height:100vh; width:100%"
         mono-font="Inconsolata,Monaco,Consolas,'Courier New',Courier,monospace"
 >
     <div slot="header">Saperion API documentation</div>
 </rapi-doc>
 
 <style>
-    rapi-doc {
-        width: 100%;
-    }
-
-    img {
-        width: 127px;
-    }
 </style>
