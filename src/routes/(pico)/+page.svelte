@@ -13,6 +13,7 @@
 	<a href="/links" role="button">onelinks test page</a>
 	<a href="/json" role="button">json test page</a>
 	<a href="/saperion-api" role="button">saperion api</a>
+	<a href="/turnstile" role="button">turnstile</a>
 </main>
 
 <style>
