@@ -1,1788 +1,1530 @@
 {
-  "swagger": "2.0",
-  "info": {
-    "version": "v1",
-    "title": "H4msd.DocGate2"
-  },
-  "host": "hdmdmz1.human.de",
-  "basePath": "/DocGate",
-  "schemes": [
-    "https"
-  ],
-  "paths": {
-    "/api/dms": {
-      "get": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Get the API Information",
-        "operationId": "Dms_GetServiceInfo",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ApiInfo"
-            }
-          }
-        }
-      }
-    },
-    "/api/dms/stores": {
-      "get": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Get a List of all configurated Stores",
-        "operationId": "Dms_GetStores",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ApiStoreInfo"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/dms/stores/{storeName}": {
-      "get": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Get the description of one store, inkl field descriptions",
-        "operationId": "Dms_GetStore",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ApiStoreDescription"
-            }
-          }
-        }
-      }
-    },
-    "/api/dms/stores/{storeName}/documents": {
-      "get": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Search documents in a store,",
-        "operationId": "Dms_SearchDocument",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "select",
-            "in": "query",
-            "description": "the field names to select, seperated by a comma(,), e.g. DocumentDate, DocumentNumber, \"Contact-ID\", ContactName",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "a filter condition, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Invoice-Amount\" gt 10200.50)",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "orderby",
-            "in": "query",
-            "description": "order definition, e.g. DocumentDate desc, \"Invoice-Amount\" asc",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "skip",
-            "in": "query",
-            "description": "skip first x records, zero based",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          },
-          {
-            "name": "limit",
-            "in": "query",
-            "description": "limit of records in the result",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ApiResultSet"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Archives a new document",
-        "operationId": "Dms_ArchiveDocument",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "document",
-            "in": "body",
-            "description": "the document object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ApiDocument"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ApiSaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/dms/stores/{storeName}/documents/{xdocumentid}": {
-      "get": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Load the meta information of a document",
-        "operationId": "Dms_LoadDocument",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xdocumentid",
-            "in": "path",
-            "description": "the id of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "newestVersion",
-            "in": "query",
-            "description": "true, if you want alwasy load the newest version of the document, otherwise false",
-            "required": false,
-            "type": "boolean"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ApiDocumentInfo"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Updates a document (Update metadata and replace files)",
-        "operationId": "Dms_UpdateDocument",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xdocumentid",
-            "in": "path",
-            "description": "the id of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "document",
-            "in": "body",
-            "description": "the document object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ApiDocument"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ApiSaveResult"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Deletes a document",
-        "operationId": "Dms_DeleteDocument",
-        "consumes": [],
-        "produces": [],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xdocumentid",
-            "in": "path",
-            "description": "the id of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "deleteMode",
-            "in": "query",
-            "description": "mode for delete",
-            "required": false,
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              0,
-              1,
-              2
-            ]
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      },
-      "patch": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Expand a document (Update metadata and add files)",
-        "operationId": "Dms_ExpandDocument",
-        "consumes": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml",
-          "application/x-www-form-urlencoded"
-        ],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xdocumentid",
-            "in": "path",
-            "description": "the id of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "document",
-            "in": "body",
-            "description": "the document object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/ApiDocument"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/ApiSaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/dms/stores/{storeName}/documents/{xdocumentid}/files/{fileId}/content": {
-      "get": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Load the binary content of a document file",
-        "operationId": "Dms_LoadDocumentFile",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xdocumentid",
-            "in": "path",
-            "description": "the id of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "fileId",
-            "in": "path",
-            "description": "the id of the file",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object"
-            }
-          }
-        }
-      }
-    },
-    "/api/dms/stores/{storeName}/documents/{xdocumentid}/versions": {
-      "get": {
-        "tags": [
-          "Dms"
-        ],
-        "summary": "Load the version history of a document",
-        "operationId": "Dms_LoadVersions",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xdocumentid",
-            "in": "path",
-            "description": "the id of the document",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "array",
-              "items": {
-                "$ref": "#/definitions/ApiVersionInfo"
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/keystores/{storeName}/{uid}": {
-      "get": {
-        "tags": [
-          "KeyStore"
-        ],
-        "summary": "Get a file",
-        "operationId": "KeyStore_GetDocument",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "the value of the unique field",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filename",
-            "in": "query",
-            "description": "a filename or filename pattern to select the file",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "skip",
-            "in": "query",
-            "description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "KeyStore"
-        ],
-        "summary": "Update a document file, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the uid do not match a document, a new document will be created",
-        "operationId": "KeyStore_UpdateDocument",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "the value of the unique field",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "KeyStore"
-        ],
-        "summary": "Creates a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "KeyStore_CreateDocument",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "the value of the unique field",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "KeyStore"
-        ],
-        "summary": "Delete a document",
-        "operationId": "KeyStore_DeleteDocument",
-        "consumes": [],
-        "produces": [],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "the value of the unique field",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "mode",
-            "in": "query",
-            "description": "mode for delete",
-            "required": false,
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              0,
-              1,
-              2
-            ]
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/api/simple/keystores/{storeName}/{uid}/file": {
-      "post": {
-        "tags": [
-          "KeyStore"
-        ],
-        "summary": "Add a file to a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the uid do not match a document, a new document will be created",
-        "operationId": "KeyStore_AppendDocumentFile",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "the value of the unique field",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/keystores/{storeName}/{uid}/meta": {
-      "put": {
-        "tags": [
-          "KeyStore"
-        ],
-        "summary": "Update meta data of a document, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the uid do not match a document, a new document will be created",
-        "operationId": "KeyStore_UpdateDocumentMeta",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "uid",
-            "in": "path",
-            "description": "the value of the unique field",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/spooler": {
-      "post": {
-        "tags": [
-          "Spooler"
-        ],
-        "summary": "Upload a binary file",
-        "operationId": "Spooler_SpoolFile",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/UploadResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/xhdoc/{xhdoc}": {
-      "get": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Get a file by XHDOC",
-        "operationId": "Store_GetDocumentByXhdoc",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xhdoc",
-            "in": "path",
-            "description": "the XHDOC Id of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filename",
-            "in": "query",
-            "description": "a filename or filename pattern to select the file",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "skip",
-            "in": "query",
-            "description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Update a document file by XHDOC, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "Store_UpdateDocumentByXhdoc",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xhdoc",
-            "in": "path",
-            "description": "the XHDOC Id of the document",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Delete a document by XHDOC",
-        "operationId": "Store_DeleteDocumentByXhdoc",
-        "consumes": [],
-        "produces": [],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xhdoc",
-            "in": "path",
-            "description": "the XHDOC of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "mode",
-            "in": "query",
-            "description": "mode for delete",
-            "required": false,
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              0,
-              1,
-              2
-            ]
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/xhdoc/{xhdoc}/file": {
-      "post": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Add a file to a document by XHDOC, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "Store_AppendDocumentFileByXhdoc",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xhdoc",
-            "in": "path",
-            "description": "the XHDOC Id of the document",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/xhdoc/{xhdoc}/meta": {
-      "put": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Update meta data of a document by XHDOC, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "Store_UpdateDocumentMetaByXhdoc",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "xhdoc",
-            "in": "path",
-            "description": "the XHDOC of the document",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/sysrowid/{sysrowid}": {
-      "get": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Get a file by SYSROWID",
-        "operationId": "Store_GetDocumentBySysrowid",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "sysrowid",
-            "in": "path",
-            "description": "the SYSROWID of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filename",
-            "in": "query",
-            "description": "a filename or filename pattern to select the file",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "skip",
-            "in": "query",
-            "description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Update a document file by SYSROWID, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "Store_UpdateDocumentBySysrowid",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "sysrowid",
-            "in": "path",
-            "description": "the SYSROWID of the document",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Delete a document by SYSROWID",
-        "operationId": "Store_DeleteDocumentBySysrowid",
-        "consumes": [],
-        "produces": [],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "sysrowid",
-            "in": "path",
-            "description": "the SYSROWID of the document",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "mode",
-            "in": "query",
-            "description": "mode for delete",
-            "required": false,
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              0,
-              1,
-              2
-            ]
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/sysrowid/{sysrowid}/file": {
-      "post": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Add a file to a document by SYSROWID, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "Store_AppendDocumentFileBySysrowid",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "sysrowid",
-            "in": "path",
-            "description": "the SYSROWID of the document",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/sysrowid/{sysrowid}/meta": {
-      "put": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Update meta data of a document by SYSROWID, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "Store_UpdateDocumentMetaBySysrowid",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "sysrowid",
-            "in": "path",
-            "description": "the SYSROWID of the document",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}": {
-      "get": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Get a file by a unique filter",
-        "operationId": "Store_GetDocumentByFilter",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filename",
-            "in": "query",
-            "description": "a filename or filename pattern to select the file",
-            "required": false,
-            "type": "string"
-          },
-          {
-            "name": "skip",
-            "in": "query",
-            "description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "type": "object"
-            }
-          }
-        }
-      },
-      "put": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Update a document file, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the filter do not match a document, a new document will be created",
-        "operationId": "Store_UpdateDocument",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      },
-      "post": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Creates a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
-        "operationId": "Store_CreateDocument",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      },
-      "delete": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Delete a document",
-        "operationId": "Store_DeleteDocument",
-        "consumes": [],
-        "produces": [],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "mode",
-            "in": "query",
-            "description": "mode for delete",
-            "required": false,
-            "type": "integer",
-            "format": "int32",
-            "enum": [
-              0,
-              1,
-              2
-            ]
-          }
-        ],
-        "responses": {
-          "204": {
-            "description": "No Content"
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/file": {
-      "post": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Add a file to a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the filter do not match a document, a new document will be created",
-        "operationId": "Store_AppendDocumentFile",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    },
-    "/api/simple/stores/{storeName}/meta": {
-      "put": {
-        "tags": [
-          "Store"
-        ],
-        "summary": "Update meta data of a document, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the filter do not match a document, a new document will be created",
-        "operationId": "Store_UpdateDocumentMeta",
-        "consumes": [],
-        "produces": [
-          "application/json",
-          "text/json",
-          "application/xml",
-          "text/xml"
-        ],
-        "parameters": [
-          {
-            "name": "storeName",
-            "in": "path",
-            "description": "the name of the store",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "filter",
-            "in": "query",
-            "description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
-            "required": true,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "schema": {
-              "$ref": "#/definitions/SaveResult"
-            }
-          }
-        }
-      }
-    }
-  },
-  "definitions": {
-    "ApiInfo": {
-      "type": "object",
-      "properties": {
-        "Version": {
-          "format": "int32",
-          "description": "Api Version",
-          "type": "integer"
-        },
-        "Servername": {
-          "description": "Servername",
-          "type": "string"
-        },
-        "TimeStamp": {
-          "format": "date-time",
-          "description": "Local Server Time",
-          "type": "string"
-        },
-        "Links": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ApiStoreInfo": {
-      "type": "object",
-      "properties": {
-        "Name": {
-          "description": "Name of the store",
-          "type": "string"
-        },
-        "DisplayName": {
-          "description": "Display name of the store",
-          "type": "string"
-        },
-        "Links": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ApiStoreDescription": {
-      "type": "object",
-      "properties": {
-        "Fields": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ApiFieldDescription"
-          }
-        },
-        "Name": {
-          "description": "Name of the store",
-          "type": "string"
-        },
-        "DisplayName": {
-          "description": "Display name of the store",
-          "type": "string"
-        },
-        "Links": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ApiFieldDescription": {
-      "type": "object",
-      "properties": {
-        "Name": {
-          "type": "string"
-        },
-        "DisplayName": {
-          "type": "string"
-        },
-        "DefaultValue": {
-          "type": "object"
-        },
-        "TypeCode": {
-          "format": "int32",
-          "type": "integer"
-        },
-        "Type": {
-          "format": "int32",
-          "enum": [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            9,
-            10,
-            12,
-            13,
-            15,
-            16,
-            99
-          ],
-          "type": "integer"
-        },
-        "TypeRepresentation": {
-          "format": "int32",
-          "enum": [
-            0,
-            1,
-            2,
-            3,
-            4,
-            5,
-            6,
-            7
-          ],
-          "type": "integer"
-        },
-        "Length": {
-          "format": "int64",
-          "type": "integer"
-        },
-        "IsSystemField": {
-          "type": "boolean"
-        },
-        "IsReadOnly": {
-          "type": "boolean"
-        },
-        "IsMultivalue": {
-          "type": "boolean"
-        },
-        "IsRequired": {
-          "type": "boolean"
-        },
-        "IsUnique": {
-          "type": "boolean"
-        }
-      }
-    },
-    "ApiResultSet": {
-      "type": "object",
-      "properties": {
-        "Items": {
-          "type": "array",
-          "items": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "object"
-            }
-          }
-        },
-        "MoreItems": {
-          "type": "boolean"
-        },
-        "NextOffset": {
-          "format": "int32",
-          "type": "integer"
-        }
-      }
-    },
-    "ApiDocument": {
-      "type": "object",
-      "properties": {
-        "Meta": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object"
-          }
-        },
-        "Files": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ApiFileReference"
-          }
-        },
-        "Acls": {
-          "type": "array",
-          "items": {
-            "type": "string"
-          }
-        },
-        "VersionComment": {
-          "type": "string"
-        }
-      }
-    },
-    "ApiFileReference": {
-      "type": "object",
-      "properties": {
-        "Filename": {
-          "type": "string"
-        },
-        "UploadId": {
-          "type": "string"
-        }
-      }
-    },
-    "ApiSaveResult": {
-      "type": "object",
-      "properties": {
-        "XDocumentId": {
-          "type": "string"
-        },
-        "XHDOC": {
-          "type": "string"
-        },
-        "SYSROWID": {
-          "type": "string"
-        },
-        "Links": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ApiDocumentInfo": {
-      "type": "object",
-      "properties": {
-        "DocumentId": {
-          "type": "string"
-        },
-        "Meta": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object"
-          }
-        },
-        "Files": {
-          "type": "array",
-          "items": {
-            "$ref": "#/definitions/ApiFileLink"
-          }
-        },
-        "Links": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ApiFileLink": {
-      "type": "object",
-      "properties": {
-        "Filename": {
-          "type": "string"
-        },
-        "DocumentId": {
-          "type": "string"
-        },
-        "FileId": {
-          "type": "string"
-        },
-        "Links": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "ApiVersionInfo": {
-      "type": "object",
-      "properties": {
-        "DocumentId": {
-          "type": "string"
-        },
-        "Meta": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "object"
-          }
-        },
-        "Number": {
-          "type": "string"
-        },
-        "User": {
-          "type": "string"
-        },
-        "Comment": {
-          "type": "string"
-        },
-        "Date": {
-          "format": "date-time",
-          "type": "string"
-        },
-        "Links": {
-          "type": "object",
-          "additionalProperties": {
-            "type": "string"
-          }
-        }
-      }
-    },
-    "SaveResult": {
-      "type": "object",
-      "properties": {
-        "DocumentId": {
-          "type": "string"
-        },
-        "XHdoc": {
-          "type": "string"
-        },
-        "Sysrowid": {
-          "type": "string"
-        },
-        "Store": {
-          "type": "string"
-        }
-      }
-    },
-    "UploadResult": {
-      "type": "object",
-      "properties": {
-        "UploadId": {
-          "type": "string"
-        }
-      }
-    }
-  },
-  "securityDefinitions": {
-    "X-API-Key": {
-      "type": "apiKey",
-      "description": "API Key Authentication",
-      "name": "X-API-Key",
-      "in": "header"
-    }
-  }
+	"swagger": "2.0",
+	"info": {
+		"version": "v1",
+		"title": "H4msd.DocGate2"
+	},
+	"host": "hdmdmz1.human.de",
+	"basePath": "/DocGate",
+	"schemes": ["https"],
+	"paths": {
+		"/api/dms": {
+			"get": {
+				"tags": ["Dms"],
+				"summary": "Get the API Information",
+				"operationId": "Dms_GetServiceInfo",
+				"consumes": [],
+				"produces": ["application/json", "text/json"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/ApiInfo"
+						}
+					}
+				}
+			}
+		},
+		"/api/dms/stores": {
+			"get": {
+				"tags": ["Dms"],
+				"summary": "Get a List of all configurated Stores",
+				"operationId": "Dms_GetStores",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/ApiStoreInfo"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/dms/stores/{storeName}": {
+			"get": {
+				"tags": ["Dms"],
+				"summary": "Get the description of one store, inkl field descriptions",
+				"operationId": "Dms_GetStore",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/ApiStoreDescription"
+						}
+					}
+				}
+			}
+		},
+		"/api/dms/stores/{storeName}/documents": {
+			"get": {
+				"tags": ["Dms"],
+				"summary": "Search documents in a store,",
+				"operationId": "Dms_SearchDocument",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "select",
+						"in": "query",
+						"description": "the field names to select, seperated by a comma(,), e.g. DocumentDate, DocumentNumber, \"Contact-ID\", ContactName",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "filter",
+						"in": "query",
+						"description": "a filter condition, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Invoice-Amount\" gt 10200.50)",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "orderby",
+						"in": "query",
+						"description": "order definition, e.g. DocumentDate desc, \"Invoice-Amount\" asc",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "skip",
+						"in": "query",
+						"description": "skip first x records, zero based",
+						"required": false,
+						"type": "integer",
+						"format": "int32"
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "limit of records in the result",
+						"required": false,
+						"type": "integer",
+						"format": "int32"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/ApiResultSet"
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Dms"],
+				"summary": "Archives a new document",
+				"operationId": "Dms_ArchiveDocument",
+				"consumes": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/x-www-form-urlencoded"
+				],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "document",
+						"in": "body",
+						"description": "the document object",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ApiDocument"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/ApiSaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/dms/stores/{storeName}/documents/{xdocumentid}": {
+			"get": {
+				"tags": ["Dms"],
+				"summary": "Load the meta information of a document",
+				"operationId": "Dms_LoadDocument",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xdocumentid",
+						"in": "path",
+						"description": "the id of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "newestVersion",
+						"in": "query",
+						"description": "true, if you want alwasy load the newest version of the document, otherwise false",
+						"required": false,
+						"type": "boolean"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/ApiDocumentInfo"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Dms"],
+				"summary": "Updates a document (Update metadata and replace files)",
+				"operationId": "Dms_UpdateDocument",
+				"consumes": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/x-www-form-urlencoded"
+				],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xdocumentid",
+						"in": "path",
+						"description": "the id of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "document",
+						"in": "body",
+						"description": "the document object",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ApiDocument"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/ApiSaveResult"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Dms"],
+				"summary": "Deletes a document",
+				"operationId": "Dms_DeleteDocument",
+				"consumes": [],
+				"produces": [],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xdocumentid",
+						"in": "path",
+						"description": "the id of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "deleteMode",
+						"in": "query",
+						"description": "mode for delete",
+						"required": false,
+						"type": "integer",
+						"format": "int32",
+						"enum": [0, 1, 2]
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			},
+			"patch": {
+				"tags": ["Dms"],
+				"summary": "Expand a document (Update metadata and add files)",
+				"operationId": "Dms_ExpandDocument",
+				"consumes": [
+					"application/json",
+					"text/json",
+					"application/xml",
+					"text/xml",
+					"application/x-www-form-urlencoded"
+				],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xdocumentid",
+						"in": "path",
+						"description": "the id of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "document",
+						"in": "body",
+						"description": "the document object",
+						"required": true,
+						"schema": {
+							"$ref": "#/definitions/ApiDocument"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/ApiSaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/dms/stores/{storeName}/documents/{xdocumentid}/files/{fileId}/content": {
+			"get": {
+				"tags": ["Dms"],
+				"summary": "Load the binary content of a document file",
+				"operationId": "Dms_LoadDocumentFile",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xdocumentid",
+						"in": "path",
+						"description": "the id of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "fileId",
+						"in": "path",
+						"description": "the id of the file",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object"
+						}
+					}
+				}
+			}
+		},
+		"/api/dms/stores/{storeName}/documents/{xdocumentid}/versions": {
+			"get": {
+				"tags": ["Dms"],
+				"summary": "Load the version history of a document",
+				"operationId": "Dms_LoadVersions",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xdocumentid",
+						"in": "path",
+						"description": "the id of the document",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "array",
+							"items": {
+								"$ref": "#/definitions/ApiVersionInfo"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/keystores/{storeName}/{uid}": {
+			"get": {
+				"tags": ["KeyStore"],
+				"summary": "Get a file",
+				"operationId": "KeyStore_GetDocument",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "uid",
+						"in": "path",
+						"description": "the value of the unique field",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filename",
+						"in": "query",
+						"description": "a filename or filename pattern to select the file",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "skip",
+						"in": "query",
+						"description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
+						"required": false,
+						"type": "integer",
+						"format": "int32"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["KeyStore"],
+				"summary": "Update a document file, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the uid do not match a document, a new document will be created",
+				"operationId": "KeyStore_UpdateDocument",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "uid",
+						"in": "path",
+						"description": "the value of the unique field",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["KeyStore"],
+				"summary": "Creates a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "KeyStore_CreateDocument",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "uid",
+						"in": "path",
+						"description": "the value of the unique field",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["KeyStore"],
+				"summary": "Delete a document",
+				"operationId": "KeyStore_DeleteDocument",
+				"consumes": [],
+				"produces": [],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "uid",
+						"in": "path",
+						"description": "the value of the unique field",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "mode",
+						"in": "query",
+						"description": "mode for delete",
+						"required": false,
+						"type": "integer",
+						"format": "int32",
+						"enum": [0, 1, 2]
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/api/simple/keystores/{storeName}/{uid}/file": {
+			"post": {
+				"tags": ["KeyStore"],
+				"summary": "Add a file to a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the uid do not match a document, a new document will be created",
+				"operationId": "KeyStore_AppendDocumentFile",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "uid",
+						"in": "path",
+						"description": "the value of the unique field",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/keystores/{storeName}/{uid}/meta": {
+			"put": {
+				"tags": ["KeyStore"],
+				"summary": "Update meta data of a document, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the uid do not match a document, a new document will be created",
+				"operationId": "KeyStore_UpdateDocumentMeta",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "uid",
+						"in": "path",
+						"description": "the value of the unique field",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/spooler": {
+			"post": {
+				"tags": ["Spooler"],
+				"summary": "Upload a binary file",
+				"operationId": "Spooler_SpoolFile",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/UploadResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/xhdoc/{xhdoc}": {
+			"get": {
+				"tags": ["Store"],
+				"summary": "Get a file by XHDOC",
+				"operationId": "Store_GetDocumentByXhdoc",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xhdoc",
+						"in": "path",
+						"description": "the XHDOC Id of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filename",
+						"in": "query",
+						"description": "a filename or filename pattern to select the file",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "skip",
+						"in": "query",
+						"description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
+						"required": false,
+						"type": "integer",
+						"format": "int32"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Store"],
+				"summary": "Update a document file by XHDOC, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "Store_UpdateDocumentByXhdoc",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xhdoc",
+						"in": "path",
+						"description": "the XHDOC Id of the document",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Store"],
+				"summary": "Delete a document by XHDOC",
+				"operationId": "Store_DeleteDocumentByXhdoc",
+				"consumes": [],
+				"produces": [],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xhdoc",
+						"in": "path",
+						"description": "the XHDOC of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "mode",
+						"in": "query",
+						"description": "mode for delete",
+						"required": false,
+						"type": "integer",
+						"format": "int32",
+						"enum": [0, 1, 2]
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/xhdoc/{xhdoc}/file": {
+			"post": {
+				"tags": ["Store"],
+				"summary": "Add a file to a document by XHDOC, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "Store_AppendDocumentFileByXhdoc",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xhdoc",
+						"in": "path",
+						"description": "the XHDOC Id of the document",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/xhdoc/{xhdoc}/meta": {
+			"put": {
+				"tags": ["Store"],
+				"summary": "Update meta data of a document by XHDOC, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "Store_UpdateDocumentMetaByXhdoc",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "xhdoc",
+						"in": "path",
+						"description": "the XHDOC of the document",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/sysrowid/{sysrowid}": {
+			"get": {
+				"tags": ["Store"],
+				"summary": "Get a file by SYSROWID",
+				"operationId": "Store_GetDocumentBySysrowid",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "sysrowid",
+						"in": "path",
+						"description": "the SYSROWID of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filename",
+						"in": "query",
+						"description": "a filename or filename pattern to select the file",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "skip",
+						"in": "query",
+						"description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
+						"required": false,
+						"type": "integer",
+						"format": "int32"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Store"],
+				"summary": "Update a document file by SYSROWID, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "Store_UpdateDocumentBySysrowid",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "sysrowid",
+						"in": "path",
+						"description": "the SYSROWID of the document",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Store"],
+				"summary": "Delete a document by SYSROWID",
+				"operationId": "Store_DeleteDocumentBySysrowid",
+				"consumes": [],
+				"produces": [],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "sysrowid",
+						"in": "path",
+						"description": "the SYSROWID of the document",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "mode",
+						"in": "query",
+						"description": "mode for delete",
+						"required": false,
+						"type": "integer",
+						"format": "int32",
+						"enum": [0, 1, 2]
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/sysrowid/{sysrowid}/file": {
+			"post": {
+				"tags": ["Store"],
+				"summary": "Add a file to a document by SYSROWID, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "Store_AppendDocumentFileBySysrowid",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "sysrowid",
+						"in": "path",
+						"description": "the SYSROWID of the document",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/sysrowid/{sysrowid}/meta": {
+			"put": {
+				"tags": ["Store"],
+				"summary": "Update meta data of a document by SYSROWID, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "Store_UpdateDocumentMetaBySysrowid",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "sysrowid",
+						"in": "path",
+						"description": "the SYSROWID of the document",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}": {
+			"get": {
+				"tags": ["Store"],
+				"summary": "Get a file by a unique filter",
+				"operationId": "Store_GetDocumentByFilter",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filter",
+						"in": "query",
+						"description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filename",
+						"in": "query",
+						"description": "a filename or filename pattern to select the file",
+						"required": false,
+						"type": "string"
+					},
+					{
+						"name": "skip",
+						"in": "query",
+						"description": "the zero based index of the file in a document, with negative values, the file is selected from the end",
+						"required": false,
+						"type": "integer",
+						"format": "int32"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"type": "object"
+						}
+					}
+				}
+			},
+			"put": {
+				"tags": ["Store"],
+				"summary": "Update a document file, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the filter do not match a document, a new document will be created",
+				"operationId": "Store_UpdateDocument",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filter",
+						"in": "query",
+						"description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			},
+			"post": {
+				"tags": ["Store"],
+				"summary": "Creates a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment",
+				"operationId": "Store_CreateDocument",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			},
+			"delete": {
+				"tags": ["Store"],
+				"summary": "Delete a document",
+				"operationId": "Store_DeleteDocument",
+				"consumes": [],
+				"produces": [],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filter",
+						"in": "query",
+						"description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "mode",
+						"in": "query",
+						"description": "mode for delete",
+						"required": false,
+						"type": "integer",
+						"format": "int32",
+						"enum": [0, 1, 2]
+					}
+				],
+				"responses": {
+					"204": {
+						"description": "No Content"
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/file": {
+			"post": {
+				"tags": ["Store"],
+				"summary": "Add a file to a document, content is sent as binary http body, filename by header x-sa-filename, meta data by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the filter do not match a document, a new document will be created",
+				"operationId": "Store_AppendDocumentFile",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filter",
+						"in": "query",
+						"description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		},
+		"/api/simple/stores/{storeName}/meta": {
+			"put": {
+				"tags": ["Store"],
+				"summary": "Update meta data of a document, meta data are sent by header x-sa-meta-{fieldname}, acls can add by header x-sa-acl seperated by semicolon (;), version comment by header x-sa-versioncomment\r\nIf the filter do not match a document, a new document will be created",
+				"operationId": "Store_UpdateDocumentMeta",
+				"consumes": [],
+				"produces": ["application/json", "text/json", "application/xml", "text/xml"],
+				"parameters": [
+					{
+						"name": "storeName",
+						"in": "path",
+						"description": "the name of the store",
+						"required": true,
+						"type": "string"
+					},
+					{
+						"name": "filter",
+						"in": "query",
+						"description": "a unique filter condition to select the document, e.g. \"Contact-ID\" eq 'C383828' and (DocumentDate ge '2020-01-01T00:00:00' or \"Record-Num\" eq 10200.50)",
+						"required": true,
+						"type": "string"
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK",
+						"schema": {
+							"$ref": "#/definitions/SaveResult"
+						}
+					}
+				}
+			}
+		}
+	},
+	"definitions": {
+		"ApiInfo": {
+			"type": "object",
+			"properties": {
+				"Version": {
+					"format": "int32",
+					"description": "Api Version",
+					"type": "integer"
+				},
+				"Servername": {
+					"description": "Servername",
+					"type": "string"
+				},
+				"TimeStamp": {
+					"format": "date-time",
+					"description": "Local Server Time",
+					"type": "string"
+				},
+				"Links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"ApiStoreInfo": {
+			"type": "object",
+			"properties": {
+				"Name": {
+					"description": "Name of the store",
+					"type": "string"
+				},
+				"DisplayName": {
+					"description": "Display name of the store",
+					"type": "string"
+				},
+				"Links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"ApiStoreDescription": {
+			"type": "object",
+			"properties": {
+				"Fields": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/ApiFieldDescription"
+					}
+				},
+				"Name": {
+					"description": "Name of the store",
+					"type": "string"
+				},
+				"DisplayName": {
+					"description": "Display name of the store",
+					"type": "string"
+				},
+				"Links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"ApiFieldDescription": {
+			"type": "object",
+			"properties": {
+				"Name": {
+					"type": "string"
+				},
+				"DisplayName": {
+					"type": "string"
+				},
+				"DefaultValue": {
+					"type": "object"
+				},
+				"TypeCode": {
+					"format": "int32",
+					"type": "integer"
+				},
+				"Type": {
+					"format": "int32",
+					"enum": [0, 1, 2, 3, 4, 5, 6, 7, 9, 10, 12, 13, 15, 16, 99],
+					"type": "integer"
+				},
+				"TypeRepresentation": {
+					"format": "int32",
+					"enum": [0, 1, 2, 3, 4, 5, 6, 7],
+					"type": "integer"
+				},
+				"Length": {
+					"format": "int64",
+					"type": "integer"
+				},
+				"IsSystemField": {
+					"type": "boolean"
+				},
+				"IsReadOnly": {
+					"type": "boolean"
+				},
+				"IsMultivalue": {
+					"type": "boolean"
+				},
+				"IsRequired": {
+					"type": "boolean"
+				},
+				"IsUnique": {
+					"type": "boolean"
+				}
+			}
+		},
+		"ApiResultSet": {
+			"type": "object",
+			"properties": {
+				"Items": {
+					"type": "array",
+					"items": {
+						"type": "object",
+						"additionalProperties": {
+							"type": "object"
+						}
+					}
+				},
+				"MoreItems": {
+					"type": "boolean"
+				},
+				"NextOffset": {
+					"format": "int32",
+					"type": "integer"
+				}
+			}
+		},
+		"ApiDocument": {
+			"type": "object",
+			"properties": {
+				"Meta": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "object"
+					}
+				},
+				"Files": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/ApiFileReference"
+					}
+				},
+				"Acls": {
+					"type": "array",
+					"items": {
+						"type": "string"
+					}
+				},
+				"VersionComment": {
+					"type": "string"
+				}
+			}
+		},
+		"ApiFileReference": {
+			"type": "object",
+			"properties": {
+				"Filename": {
+					"type": "string"
+				},
+				"UploadId": {
+					"type": "string"
+				}
+			}
+		},
+		"ApiSaveResult": {
+			"type": "object",
+			"properties": {
+				"XDocumentId": {
+					"type": "string"
+				},
+				"XHDOC": {
+					"type": "string"
+				},
+				"SYSROWID": {
+					"type": "string"
+				},
+				"Links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"ApiDocumentInfo": {
+			"type": "object",
+			"properties": {
+				"DocumentId": {
+					"type": "string"
+				},
+				"Meta": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "object"
+					}
+				},
+				"Files": {
+					"type": "array",
+					"items": {
+						"$ref": "#/definitions/ApiFileLink"
+					}
+				},
+				"Links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"ApiFileLink": {
+			"type": "object",
+			"properties": {
+				"Filename": {
+					"type": "string"
+				},
+				"DocumentId": {
+					"type": "string"
+				},
+				"FileId": {
+					"type": "string"
+				},
+				"Links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"ApiVersionInfo": {
+			"type": "object",
+			"properties": {
+				"DocumentId": {
+					"type": "string"
+				},
+				"Meta": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "object"
+					}
+				},
+				"Number": {
+					"type": "string"
+				},
+				"User": {
+					"type": "string"
+				},
+				"Comment": {
+					"type": "string"
+				},
+				"Date": {
+					"format": "date-time",
+					"type": "string"
+				},
+				"Links": {
+					"type": "object",
+					"additionalProperties": {
+						"type": "string"
+					}
+				}
+			}
+		},
+		"SaveResult": {
+			"type": "object",
+			"properties": {
+				"DocumentId": {
+					"type": "string"
+				},
+				"XHdoc": {
+					"type": "string"
+				},
+				"Sysrowid": {
+					"type": "string"
+				},
+				"Store": {
+					"type": "string"
+				}
+			}
+		},
+		"UploadResult": {
+			"type": "object",
+			"properties": {
+				"UploadId": {
+					"type": "string"
+				}
+			}
+		}
+	},
+	"securityDefinitions": {
+		"X-API-Key": {
+			"type": "apiKey",
+			"description": "API Key Authentication",
+			"name": "X-API-Key",
+			"in": "header"
+		}
+	}
 }
