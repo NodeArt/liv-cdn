@@ -14,16 +14,21 @@
 		}
 		const name = provider.name;
 		const currentUrl = url + base;
-		const amount = Math.ceil(Math.random() * 100);
-		const currency = provider.currencyType;
+		const amount = 19999;
+		const currency = "USD";
 		const externalClientId = 'tbd';
 		const successUrl = currentUrl + '/success';
 		const failUrl = currentUrl + '/fail';
-		console.log(amount, currency, successUrl, failUrl);
+		console.log(provider.currencyType,
+				amount,
+				currency,
+				successUrl,
+				failUrl,
+				externalClientId);
 		const paymentData = await banksy.createPayment(
-			currency,
-			amount,
-			name,
+				provider.currencyType,
+				amount,
+				currency,
 			successUrl,
 			failUrl,
 			externalClientId
