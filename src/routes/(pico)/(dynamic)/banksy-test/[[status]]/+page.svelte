@@ -14,6 +14,7 @@
 	const params = get(page).params;
 	const paymentId = url.searchParams.get('paymentId');
 	let selectedProvider: string;
+	let amount: 10;
 	let providers: PaymentProvider[];
 	banksy.getProviders().then((data) => {
 		providers = data;
@@ -28,11 +29,15 @@
 	async function pay() {
 		const successUrl = url.origin + base + '/' + pagePath + '/success';
 		const failUrl = url.origin + base + '/' + pagePath + '/fail';
+		if (!amount) {
+			console.error('Positive amount required!');
+			return;
+		}
 		if (!selectedProvider) {
 			console.error('Provider is required to create a payment link!');
 			return;
 		}
-		const link = await createRedirectLink(selectedProvider, 20, successUrl, failUrl);
+		const link = await createRedirectLink(selectedProvider, amount, successUrl, failUrl);
 		if (!link?.length) {
 			console.error('No link created!');
 			return;
@@ -62,6 +67,9 @@
 				>
 			{/each}
 		</select>
+		<label
+			>Amount: <input type="number" placeholder="enter amount" min="1" bind:value={amount} />
+		</label>
 		<button on:click={pay}>Pay</button>
 	{:else}
 		<p>Loading...</p>
