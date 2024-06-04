@@ -1,5 +1,9 @@
 <script lang="ts">
-	import banksy, { checkPayment, createRedirectLink, type PaymentProvider } from '$lib/utils/banksy';
+	import banksy, {
+		checkPayment,
+		createRedirectLink,
+		type PaymentProvider
+	} from '$lib/utils/banksy';
 	import { page } from '$app/stores';
 	import { base } from '$app/paths';
 	import { get } from 'svelte/store';
@@ -20,7 +24,7 @@
 	}
 
 	async function pay() {
-		const provider = providers.find(p => p.name === selectedProvider);
+		const provider = providers.find((p) => p.name === selectedProvider);
 		const successUrl = url.origin + base + '/success';
 		const failUrl = url.origin + base + '/fail';
 		if (!provider) {
@@ -38,8 +42,8 @@
 			console.warn('Should be redirected?');
 		}
 	}
-
 </script>
+
 {#if params.status === 'success'}
 	<h1>Payment successful!</h1>
 {/if}
@@ -60,4 +64,3 @@
 		<p>Loading...</p>
 	{/if}
 {/if}
-

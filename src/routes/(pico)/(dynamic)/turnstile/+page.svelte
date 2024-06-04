@@ -3,7 +3,7 @@
 
 	onMount(async () => {
 		console.log('ts loaded');
-        window.dataLayer = window.dataLayer || [];
+		window.dataLayer = window.dataLayer || [];
 		var tsblock = document.createElement('div');
 		tsblock.id = 'ts';
 		var modal = document.createElement('div');

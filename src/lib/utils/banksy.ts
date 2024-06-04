@@ -10,7 +10,7 @@ export type PaymentProvider = {
 	_id: string;
 	name: string;
 	currencyType: string;
-	title?: string
+	title?: string;
 };
 
 export async function checkPayment(paymentId: string): Promise<boolean> {
@@ -23,7 +23,12 @@ export async function checkPayment(paymentId: string): Promise<boolean> {
 	return paymentData.status === 'success';
 }
 
-export async function createRedirectLink(provider: PaymentProvider, amount: number, successUrl: string, failUrl: string) {
+export async function createRedirectLink(
+	provider: PaymentProvider,
+	amount: number,
+	successUrl: string,
+	failUrl: string
+) {
 	const currency = 'USD';
 	const externalClientId = 'tbd';
 	const response = await banksy.createPayment(
