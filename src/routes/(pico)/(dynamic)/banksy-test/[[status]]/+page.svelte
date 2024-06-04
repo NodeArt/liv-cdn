@@ -17,7 +17,7 @@
 	let providers: PaymentProvider[];
 	banksy.getProviders().then((data) => {
 		providers = data;
-		providers.push({title: "crypto (disabled)", currencyType:"crypto", name: "crypto"})
+		providers.push({ title: 'crypto (disabled)', currencyType: 'crypto', name: 'crypto' });
 		selectedProvider = data[0].currencyType;
 	});
 
@@ -57,7 +57,9 @@
 	{#if providers?.length}
 		<select name="providers" id="providers" bind:value={selectedProvider}>
 			{#each providers as provider (provider._id)}
-				<option value={provider.currencyType}>{provider.title || provider.name}: {provider.currencyType}</option>
+				<option value={provider.currencyType}
+					>{provider.title || provider.name}: {provider.currencyType}</option
+				>
 			{/each}
 		</select>
 		<button on:click={pay}>Pay</button>
