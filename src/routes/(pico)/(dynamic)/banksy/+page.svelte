@@ -39,7 +39,6 @@
 		console.log('providers data', data);
 		providersData = data;
 		selectedProvider = data[0].name;
-		createRedirectLink();
 	});
 
 </script>
@@ -50,6 +49,7 @@
 				<option value={provider.name}>{provider.title || provider.name}</option>
 			{/each}
 	</select>
+	<button on:click={createRedirectLink}>Pay</button>
 {:else}
 	<p>Loading...</p>
 {/if}
