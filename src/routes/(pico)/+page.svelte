@@ -14,6 +14,7 @@
 	<a href="/json" role="button">json test page</a>
 	<a href="/saperion-api" role="button">saperion api</a>
 	<a href="/turnstile" role="button">turnstile</a>
+	<a href="/banksy-test" role="button">bansky test</a>
 </main>
 
 <style>
