@@ -9,6 +9,7 @@
 	import { get } from 'svelte/store';
 	import { browser } from '$app/environment';
 
+	const pagePath = 'banksy-test';
 	const url = get(page).url;
 	const params = get(page).params;
 	const paymentId = url.searchParams.get('paymentId');
@@ -25,8 +26,8 @@
 
 	async function pay() {
 		const provider = providers.find((p) => p.name === selectedProvider);
-		const successUrl = url.origin + base + '/success';
-		const failUrl = url.origin + base + '/fail';
+		const successUrl = url.origin + base + '/' + pagePath + '/success';
+		const failUrl = url.origin + base + '/' + pagePath + '/fail';
 		if (!provider) {
 			console.error('Provider is required to create a payment link!');
 			return;
