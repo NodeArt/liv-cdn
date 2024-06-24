@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Page</title>
+</head>
+<body>
+<h1>Test Page for postMessage</h1>
+<script>
+    // Відправляємо перше повідомлення
+    window.postMessage(JSON.stringify({
+        customerId: "74575FFFDF45776",
+        userId    : "dfgbdf56756tyu",
+    }), '*');
+
+    window.addEventListener("message", function (event) {
+        console.log("android event: ",event)
+        if (!Android) return;
+        return Android.addEventListener(event);
+    });
+
+</script>
+</body>
+</html>
