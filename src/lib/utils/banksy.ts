@@ -36,10 +36,9 @@ export async function createRedirectLink(
 		currency,
 		externalClientId,
 		currencyType: provider,
-//		provider: "paypal",
-		customerEmail: "nosov@nodeart.io",
-		customerName: "Nosov"
-		}
-	);
+		//		provider: "paypal",
+		customerEmail: 'nosov@nodeart.io',
+		customerName: 'Nosov'
+	});
 	return response.paymentLink;
 }
