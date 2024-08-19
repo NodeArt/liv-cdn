@@ -1,7 +1,6 @@
 import { Banksy } from '@nest25/banksy-sdk';
 //todo: Uncomment to use .env variable. The name of variable should has VITE_ prefix.
 const BANKSY_CLIENT_KEY = import.meta.env.VITE_BANKSY_CLIENT_KEY_STAGE;
-// const BANKSY_CLIENT_KEY = 'ck_test_f39f8a74-1267-4ce8-a0cb-e19e2597c105';
 const banksy = new Banksy(BANKSY_CLIENT_KEY);
 export default banksy;
 
@@ -25,18 +24,22 @@ export async function checkPayment(paymentId: string): Promise<boolean> {
 export async function createRedirectLink(
 	provider: string,
 	amount: number,
-	successUrl: string,
-	failUrl: string
+	successCallback: string,
+	failureCallback: string
 ) {
 	const currency = 'USD';
 	const externalClientId = 'tbd';
-	const response = await banksy.createPayment(
-		provider,
+	const response = await banksy.createPayment({
 		amount,
+		successCallback,
+		failureCallback,
 		currency,
-		successUrl,
-		failUrl,
-		externalClientId
+		externalClientId,
+		currencyType: provider,
+//		provider: "paypal",
+		customerEmail: "nosov@nodeart.io",
+		customerName: "Nosov"
+		}
 	);
 	return response.paymentLink;
 }
