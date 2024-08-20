@@ -36,6 +36,7 @@ export async function createRedirectLink(
 		currency,
 		externalClientId,
 		currencyType: provider,
+		isKycOptional: true,
 		//		provider: "paypal",
 		customerEmail: 'nosov@nodeart.io',
 		customerName: 'Nosov'
