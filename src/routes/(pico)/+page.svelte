@@ -15,6 +15,7 @@
 	<a href="/saperion-api" role="button">saperion api</a>
 	<a href="/turnstile" role="button">turnstile</a>
 	<a href="/banksy-test" role="button">bansky test</a>
+	<a href="/provability-fair-crash" role="button">provability fair crash</a>
 </main>
 
 <style>
