@@ -1,4 +1,4 @@
-import { Banksy } from '@nest25/banksy-sdk';
+import { Banksy } from 'banksy-sdk';
 //todo: Uncomment to use .env variable. The name of variable should has VITE_ prefix.
 const BANKSY_CLIENT_KEY = import.meta.env.VITE_BANKSY_CLIENT_KEY_STAGE;
 const banksy = new Banksy(BANKSY_CLIENT_KEY);
